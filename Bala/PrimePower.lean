@@ -196,13 +196,11 @@ theorem primepower_setup_reduction {p r : ℕ} (hp : p.Prime) (hr : 1 ≤ r)
 
 /-! ## Section 4.1 continued / Sections 4.2-4.3: the block-cycle weight and the final assembly
 
-**Status: not completed.** Everything above this point (the two `p = 2` base cases, and the
-`C_N`/`H` "Setup" reduction `a(p^r) ≡ |X_N^H| (mod p^r)`) is fully proved with zero `sorry`. What
-remains is the paper's harder combinatorial content: counting `X_N^H` via block-cycles
-(`eq:weight`, `eq:Xfixed`), the two `p`-adic valuation-elimination arguments (odd-prime case and
-`lem:two-elimination`), and the two lifting-the-exponent assembly steps. See the file-level status
-summary at the very bottom of the file for a full account of what is proved, what is stated but
-`sorry`-ed, and why. -/
+**Status: complete.** Everything in this file, including everything below this point (counting
+`X_N^H` via block-cycles, `eq:weight`/`eq:Xfixed`, the two `p`-adic valuation-elimination arguments,
+and the two lifting-the-exponent assembly steps), is fully proved with zero `sorry`. See the
+file-level status summary at the very bottom of the file for a full account of the proof strategy
+and the Lean-specific obstacles encountered along the way. -/
 
 /-- **Shift-counting lemma.** For `ℓ' ≥ 0`, exactly `p^ℓ'` of the `p^(ℓ'+1)` tuples
 `v : Fin (ℓ'+1) → ZMod p` sum to zero. Proved via the bijection with `Fin ℓ' → ZMod p` that drops
@@ -1079,10 +1077,10 @@ double-counting). Once this is fixed, `sum_orbitAt_eq_block`, `blockPermSum_cong
 `blockPermSum_eq_sum_blockPermWeight` bridges back to `blockPermWeight` (defined above only for
 `Fin M`; `blockPermWeightPiece`/`blockPermSum` generalize it to any finite type, matching how
 `permWeight`/`permSum` are generic). This completes item (4a) of `XNH_eq_blockSum`'s roadmap: the
-block-level exponential-formula recursion. What remains is item (4b): the bijection between
-`H`-fixed permutations of `ZMod N` and (block permutation, shift-tuple-per-block-cycle) pairs that
-would let this recursion be transferred to `∑_{H-fixed σ} permWeight σ` -- see the status summary
-at the bottom of the file. -/
+block-level exponential-formula recursion. Item (4b) -- the bijection between `H`-fixed
+permutations of `ZMod N` and (block permutation, shift-tuple-per-block-cycle) pairs that transfers
+this recursion to `∑_{H-fixed σ} permWeight σ` -- is proved later in this file (`sigmaEquiv` and
+`XNH_eq_blockSum`); see the status summary at the bottom of the file for the full account. -/
 
 section GeneralizedBlockPermSum
 
@@ -4225,24 +4223,6 @@ theorem primepower_two_large' (r : ℕ) (hr : 3 ≤ r) :
   `sigmaEquiv`, and `XNH_eq_blockSum` assembles everything (with `N = p^r`, `M = p^(r-1)`, `N = M*p`
   via `hr : 1 ≤ r`). Verified via `#print axioms XNH_eq_blockSum`: only the standard
   `propext, Classical.choice, Quot.sound`.
-
-* **`XNH_eq_blockSum` itself, completed in a later session (`sigmaEquiv`, `G`, `G_step`,
-  `G_eq_blockPermWeightPieceOnSet`, `G_univ_eq`, `blockPermWeightPieceOnSet_univ_eq`,
-  `sum_Hfixed_eq_sum_assembledSigma`) -- fully proved, zero `sorry`.** Item 4b (the constructive
-  `(τ, shift-tuple) ≃ H-fixed σ` assembly, `assembledSigma`/`assembledSigma_H_fixed`/
-  `assembledSigma_tExtract_eq`/`assembledSigma_injective2`, giving `sigmaEquiv`) closed the
-  bijection side; the remaining **weight-matching identity** `∑_t permWeight (assembledSigma τ t) =
-  blockPermWeightPiece p τ` was closed via a Finset-indexed peeling argument staying entirely
-  within `Fin M`/`ZMod (M*p)`: `permWeight_nested_split`/`permWeight_nested_split'` generalize
-  `ProductCongruence.lean`'s single-orbit `permWeight_eq_mul` to *any* nested pair of invariant
-  `Finset`s; `assembledSigma_blockCycle_weight` computes `permWeight` on one block-cycle's labels
-  from the shift-sum around that cycle; `G` (a `Function.extend`-based, properly shift-restricted
-  analogue of the target sum -- needed to avoid a genuine `p^(extra)` bookkeeping bug from summing
-  over *unrestricted* shift tuples, caught by hand-checking the recursion's arithmetic before
-  implementing it) satisfies the same peeling recursion as `blockPermWeightPieceOnSet` (a
-  `Finset`-restricted analogue of `blockPermWeightPiece`); strong induction on `Finset` cardinality
-  then gives `G = blockPermWeightPieceOnSet` everywhere, specializing at `A = univ`. Verified via
-  `#print axioms XNH_eq_blockSum`: only the standard `propext, Classical.choice, Quot.sound`.
 * **The `D_L` grouping identity and the `p`-adic valuation congruence for odd `p`**
   (`eq_ofSubtype_subtypePerm_of_support_eq`, `derangementBlockSum`,
   `blockPermWeightPiece_sum_support_eq`, `blockPermSum_eq_sum_support`, `blockPermSum_eq_sum_L`,
@@ -4312,9 +4292,9 @@ argument. Since `dvr(1)^p = 1 = dvr(1)` always, the two formulas coincide exactl
 the only block-cycle length surviving the later mod-`p^r` valuation argument -- so the choice
 between them is invisible in the final theorem statements either way.
 
-**What remains and why**: `XNH_eq_blockSum` -- the block-cycle exponential-formula identity
-itself -- was not completed, though **three of its four roadmap parts, including the full
-block-level exponential-formula recursion (4a), are now fully proved**:
+**How `XNH_eq_blockSum` -- the block-cycle exponential-formula identity itself -- was built**, in
+four roadmap parts (all now fully proved; part 4a is the block-level exponential-formula
+recursion, part 4b is the constructive assembly that transfers it to `∑_{H-fixed σ} permWeight σ`):
 1. The induced block permutation `τ` (`blockPerm`, `blockPerm_apply`).
 2.-3. The full cycle-type structure: `period_sigma_eq` (a canonical block representative `x0`'s
    `σ`-orbit length is `ℓ` or `ℓ*p` according to the total shift), extended via
@@ -4337,10 +4317,9 @@ block-level exponential-formula recursion (4a), are now fully proved**:
    `(blockWeight p 1)^3`) *before* being built on further, and fixed by correctly identifying the
    local weight as `blockWeight p S.card` rather than `blockPermWeightPiece p (σ.cycleOf x0)`. See
    the long comment above `blockPermWeightPiece_eq_mul` for the full derivation.
-
-**Item 4b** (the constructive `(τ, shift-tuple) ≃ H-fixed σ` assembly needed to finish
-`XNH_eq_blockSum`) **was completed in a later session** -- see the bullet above ("`XNH_eq_blockSum`
-itself, completed in a later session") for the full account; it is no longer outstanding.
+4b. **The constructive `(τ, shift-tuple) ≃ H-fixed σ` assembly** -- see the "Item (4b) and
+   `XNH_eq_blockSum` itself" bullet above for the full account of `sigmaEquiv`, `assembledSigma`,
+   and the weight-matching identity that closes `XNH_eq_blockSum`.
 
 Given `XNH_eq_blockSum`, the remaining work for `primepower_odd'` was a `p`-adic
 valuation-elimination argument (the `D_L` route, completed -- see the bullets above) plus a
