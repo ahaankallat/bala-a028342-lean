@@ -1,4 +1,4 @@
-# bala
+# Bala A028342 Lean
 
 A complete Lean 4 / Mathlib formalization of *"A Proof of Bala's Congruence
 Conjecture for A028342"* (see `main.tex` in the parent directory).
