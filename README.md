@@ -1,7 +1,7 @@
-# Bala A028342 Lean
+# Bala's congruence conjecture for A028342 (Lean 4)
 
-A complete Lean 4 / Mathlib formalization of *"A Proof of Bala's Congruence
-Conjecture for A028342"* (see `main.tex` in the parent directory).
+This repository contains a complete Lean 4 and Mathlib formalization of the paper *A Proof of Bala's Congruence Conjecture for A028342* by Ahaan Kallat ([arXiv:2607.18313](https://arxiv.org/abs/2607.18313)). The sequence A028342 counts permutations in which every cycle of length m is assigned one divisor of m, and Peter Bala conjectured congruences a(n+k) ≡ ±a(n) modulo k that depend on k modulo 8. The proof first establishes the product congruence a(n+k) ≡ a(n)a(k) modulo k by letting a cyclic group act on colored permutations, and then computes a(p^r) modulo p^r for each prime power.
+
 
 ## Status: fully verified, zero `sorry`, zero paper-specific axioms
 
@@ -53,3 +53,7 @@ to this paper.
 
 Run `lake build` (after `lake exe cache get` to fetch Mathlib's prebuilt
 oleans) to typecheck everything.
+
+## License and citation
+
+The code is released under the Apache License 2.0 (see `LICENSE`). Citation details are in `CITATION.cff`, and GitHub shows a "Cite this repository" button.

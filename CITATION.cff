@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite the paper below."
+title: "Lean 4 formalization of 'A Proof of Bala's Congruence Conjecture for A028342'"
+type: software
+authors:
+  - family-names: Kallat
+    given-names: Ahaan
+    affiliation: "Northeastern University"
+repository-code: "https://github.com/ahaankallat/bala-a028342-lean"
+license: Apache-2.0
+abstract: "Lean 4 and Mathlib formalization of the proof of Peter Bala's congruence conjecture for OEIS A028342, which counts permutations whose cycles are each assigned a divisor of their length."
+keywords:
+  - "lean4"
+  - "mathlib"
+  - "formal verification"
+  - "congruences"
+  - "colored permutations"
+  - "OEIS"
+  - "A028342"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Kallat
+      given-names: Ahaan
+  title: "A Proof of Bala's Congruence Conjecture for A028342"
+  year: 2026
+  journal: "arXiv:2607.18313"
+  url: "https://arxiv.org/abs/2607.18313"
